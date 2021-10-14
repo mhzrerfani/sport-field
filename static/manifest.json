@@ -1,0 +1,16 @@
+{
+	"name": "Sport Field reservation",
+	"short_name": "sport-field",
+	"description": "an App for reserving sport field anytime, anywhere",
+	"icons": [
+		{
+			"src": "favicon",
+			"sizes": "32x32",
+			"type": "image/png"
+		}
+	],
+	"start_url": "/pwa-examples/js13kpwa/index.html",
+	"display": "fullscreen",
+	"theme_color": "#DF6531",
+	"background_color": "#DF6531"
+}
