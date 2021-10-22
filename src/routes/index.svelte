@@ -4,7 +4,7 @@
 	import { signingStep } from '../stores';
 
 	const signUp = () => {
-		$signingStep = 'info';
+		$signingStep = 'phone';
 	};
 	const logIn = () => {
 		$signingStep = 'login';
@@ -14,7 +14,11 @@
 <svelte:head>
 	<title>باشگاه</title>
 </svelte:head>
-<div transition:fade={{ duration: 700 }} class="flex flex-col h-screen f-full">
+<div
+	in:fade={{ duration: 400, delay: 400 }}
+	out:fade={{ duration: 400 }}
+	class="flex flex-col h-screen f-full"
+>
 	<header class="flex justify-between mx-7 mt-7  realtive">
 		<div class="flex gap-4 text-white text-lg">
 			<a href="/signing" on:click={signUp}>ثبت نام</a>
@@ -51,7 +55,7 @@
 	<div />
 </div>
 
-<div transition:fade={{ duration: 400 }} class="w-full bg-white">
+<div in:fade={{ duration: 400, delay: 400 }} out:fade={{ duration: 400 }} class="w-full bg-white">
 	<div class="pt-4 mr-8 flex flex-col text-md gap-6 pb-4">
 		<span class="text-lg mr-2">ارتباط با ما</span>
 		<span>تلفن: ۰۲۱۱۲۳۴۵۶۷</span>
