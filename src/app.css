@@ -1,4 +1,28 @@
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
+
+@layer base {
+	@font-face {
+		font-family: 'bardiya';
+		font-weight: 400;
+		src: url('/assets/font/bardiya/regular.woff') format('woff-variations'),
+			/* will be the standard and works in Safari now */ url('danawebGX.woff');
+		font-display: fallback;
+	}
+	@font-face {
+		font-family: 'bardiya';
+		font-weight: 700;
+		src: url('/assets/font/bardiya/bold.woff') format('woff-variations'),
+			/* will be the standard and works in Safari now */ url('danawebGX.woff');
+		font-display: fallback;
+	}
+}
 @tailwind components;
-@tailwind utilities
+.btn {
+	@apply rounded-2xl bg-white mb-5 shadow-xl text-orange;
+}
+.input {
+	@apply w-80 h-11 pr-3 placeholder-opacity-30 shadow-xl rounded-xl text-lg focus:border-orange;
+}
+
+@tailwind utilities;

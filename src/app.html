@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 	<head>
 		<meta charset="utf-8" />
+		<link rel="manifest" href="manifest.json" />
 		<link rel="icon" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../node_modules/toastify-js/src/toastify.css" />
 		%svelte.head%
 	</head>
-	<body>
+	<body
+		class="font-vazir overflow-x-hidden"
+		style="
+			direction: rtl;
+			background: rgb(223, 90, 33);
+			background: linear-gradient(90deg, rgba(223, 90, 33, 1) 0%, rgba(233, 121, 74, 1) 100%);
+			transition-duration: 0.3s;
+		"
+	>
 		<div id="svelte">%svelte.body%</div>
 	</body>
 </html>
