@@ -4,7 +4,7 @@ const config = {
 
 	theme: {
 		fontFamily: {
-			vazir: ['vazir']
+			vazir: ['bardiya', 'vazir']
 		},
 		extend: {
 			colors: {
