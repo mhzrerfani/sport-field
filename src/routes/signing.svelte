@@ -6,7 +6,12 @@
 	import Toastify from 'toastify-js';
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import numberTransformer from '../helper/numberTransformer';
-	let name: string, phone: number, code: number, password: string, password2: string;
+	let name: string,
+		phone: number,
+		code: number,
+		password: string,
+		password2: string,
+		newPassPhase = false;
 
 	const errorHandler = (error) => {
 		error.response.data.errors.forEach((error: { field: string; message: string }) => {
@@ -28,12 +33,14 @@
 	};
 
 	// Events Handlers
-	const infoHandler = async (event: Event) => {
+	const phoneHandler = async (event: Event) => {
 		contentHandler(event).sent();
 		try {
 			const formData = new FormData();
 			formData.append('phone', numberTransformer(phone + ''));
-			await axiosInstance.post('/user/submit-phone', formData);
+			!newPassPhase
+				? await axiosInstance.post('/user/submit-phone', formData)
+				: await axiosInstance.post('/auth/forget-password', formData);
 			$signingStep = 'code';
 		} catch (error) {
 			contentHandler(event).errorReceived(error);
@@ -45,7 +52,9 @@
 			const formData = new FormData();
 			formData.append('phone', numberTransformer(phone + ''));
 			formData.append('code', numberTransformer(code + ''));
-			await axiosInstance.post('/user/verify-phone', formData);
+			!newPassPhase
+				? await axiosInstance.post('/user/verify-phone', formData)
+				: await axiosInstance.post('/auth/check-code', formData);
 			$signingStep = 'password';
 		} catch (error) {
 			contentHandler(event).errorReceived(error);
@@ -61,9 +70,13 @@
 			try {
 				const formData = new FormData();
 				formData.append('phone', numberTransformer(phone + ''));
-				formData.append('name', name);
+				if (!newPassPhase) formData.append('name', name);
+				if (newPassPhase) formData.append('code', numberTransformer(code + ''));
 				formData.append('password', password);
-				await axiosInstance.post('/user/create', formData);
+				!newPassPhase
+					? await axiosInstance.post('/user/create', formData)
+					: await axiosInstance.patch('/auth/change-password', formData);
+				newPassPhase = false;
 				$signingStep = 'login';
 			} catch (error) {
 				contentHandler(event).errorReceived(error);
@@ -86,17 +99,19 @@
 
 <Signing>
 	<form
-		transition:fade={{ duration: 700 }}
-		slot="info"
+		in:fade={{ duration: 400, delay: 400 }}
+		out:fade={{ duration: 400 }}
+		slot="phone"
 		class="flex flex-col gap-6 justify-center items-center"
 	>
 		<input class="input" type="text" placeholder="شماره همراه" bind:value={phone} />
-		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={infoHandler}>ارسال کد تائید</button
+		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={phoneHandler}
+			>ارسال کد تائید</button
 		>
 	</form>
 	<form
-		in:fade={{ delay: 700 }}
-		out:fade={{ delay: 400 }}
+		in:fade={{ duration: 400, delay: 400 }}
+		out:fade={{ duration: 400 }}
 		slot="code"
 		class="flex flex-col gap-6 justify-center items-center"
 	>
@@ -109,22 +124,34 @@
 		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={codeHandler}>تائید کد</button>
 	</form>
 	<form
-		transition:fade={{ duration: 700 }}
+		in:fade={{ duration: 400, delay: 400 }}
+		out:fade={{ duration: 400 }}
 		slot="password"
 		class="flex flex-col gap-6 justify-center items-center"
 	>
-		<input class="input" type="text" placeholder="نام و نام خانوادگی" bind:value={name} />
+		{#if !newPassPhase}
+			<input class="input" type="text" placeholder="نام و نام خانوادگی" bind:value={name} />
+		{/if}
 		<input class="input" type="password" placeholder="رمز" bind:value={password} />
 		<input class="input" type="password" placeholder="تکرار رمز" bind:value={password2} />
-		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={passwordHandler}>ثبت نام</button>
+		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={passwordHandler}
+			>{#if !newPassPhase}ثبت نام{:else}ثبت رمز جدید{/if}</button
+		>
 	</form>
 	<form
-		transition:fade={{ duration: 700 }}
+		in:fade={{ duration: 400, delay: 400 }}
+		out:fade={{ duration: 400 }}
 		slot="login"
-		class="flex flex-col gap-6 justify-center items-center"
+		class="flex flex-col w-min gap-6 justify-center items-center"
 	>
 		<input class="input" type="text" placeholder="شماره همراه" bind:value={phone} />
 		<input class="input" type="password" placeholder="رمز" bind:value={password} />
-		<button class="btn mt-12 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
+		<button
+			class=" self-start text-white"
+			on:click|preventDefault={() => {
+				$signingStep = 'phone';
+				newPassPhase = true;
+			}}>فراموشی رمز</button
+		> <button class="btn mt-4 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
 	</form>
 </Signing>

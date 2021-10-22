@@ -5,7 +5,8 @@
 </script>
 
 <div
-	transition:fade={{ duration: 400 }}
+	in:fade={{ duration: 400, delay: 400 }}
+	out:fade={{ duration: 400 }}
 	class=" relative w-full h-full flex justify-center flex-col overflow-hidden"
 >
 	<svg class="absolute w-full h-80 top-0" xmlns="http://www.w3.org/2000/svg"
@@ -18,15 +19,19 @@
 	<div class="realtive flex justify-around z-50">
 		<img src={players} alt="Athletes" />
 	</div>
-	<div class="mt-10 h-full">
-		{#if $signingStep == 'info'}
-			<slot name="info" />
+	<div class="mt-10 h-full flex w-full justify-center">
+		{#if $signingStep == 'phone'}
+			<slot name="phone" />
 		{:else if $signingStep == 'code'}
 			<slot name="code" />
 		{:else if $signingStep == 'password'}
 			<slot name="password" />
 		{:else if $signingStep == 'login'}
 			<slot name="login" />
+		{:else if $signingStep == 'forgetPass'}
+			<slot name="forgetPass" />
+		{:else if $signingStep == 'newPass'}
+			<slot name="newPass" />
 		{/if}
 	</div>
 </div>
