@@ -2,7 +2,7 @@
 	"name": "sport-field",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "svelte-kit dev",
+		"dev": "svelte-kit dev --port 2000",
 		"build": "svelte-kit build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -12,6 +12,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/kit": "next",
+		"@types/toastify-js": "^1.9.2",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
 		"autoprefixer": "^10.3.6",
@@ -32,6 +33,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"axios": "^0.23.0",
+		"toastify-js": "^1.11.2",
 		"vazir-font": "^30.1.0"
 	}
 }
