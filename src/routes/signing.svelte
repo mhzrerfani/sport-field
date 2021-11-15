@@ -1,11 +1,16 @@
 <script lang="ts">
-	import { signingStep } from '../stores';
+	import { signingStep, token, loading } from '../stores';
 	import { fade } from 'svelte/transition';
 	import Signing from '../components/Signing.svelte';
-	import axiosInstance from '../helper/axios';
+	import axios from 'axios';
+	import routeToPage from '../helper/routing';
 	import Toastify from 'toastify-js';
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import numberTransformer from '../helper/numberTransformer';
+	import store from '../helper/token';
+	import { onMount } from 'svelte';
+	axios.defaults.baseURL = 'http://localhost:3000/';
+
 	let name: string,
 		phone: number,
 		code: number,
@@ -18,13 +23,18 @@
 			Toastify(ToastifyConfig(error.message)).showToast();
 		});
 	};
-	const contentHandler = (event: { target: HTMLButtonElement }) => {
+	onMount(() => {
+		$loading = false;
+	});
+	const contentHandler = (event) => {
 		return {
 			sent: () => {
+				$loading = true;
 				event.target.disabled = true;
 				event.target.textContent = 'درحال ارسال ...';
 			},
 			errorReceived: (error) => {
+				$loading = false;
 				event.target.disabled = false;
 				event.target.textContent = 'ارسال دوباره';
 				errorHandler(error);
@@ -33,38 +43,38 @@
 	};
 
 	// Events Handlers
-	const phoneHandler = async (event: Event) => {
-		contentHandler(event).sent();
+	const phoneHandler = async (e) => {
+		contentHandler(e).sent();
 		try {
 			const formData = new FormData();
 			formData.append('phone', numberTransformer(phone + ''));
 			!newPassPhase
-				? await axiosInstance.post('/user/submit-phone', formData)
-				: await axiosInstance.post('/auth/forget-password', formData);
+				? await axios.post('/user/submit-phone', formData)
+				: await axios.post('/auth/forget-password', formData);
 			$signingStep = 'code';
 		} catch (error) {
-			contentHandler(event).errorReceived(error);
+			contentHandler(e).errorReceived(error);
 		}
 	};
-	const codeHandler = async (event: { target: HTMLButtonElement }) => {
-		contentHandler(event).sent();
+	const codeHandler = async (e) => {
+		contentHandler(e).sent();
 		try {
 			const formData = new FormData();
 			formData.append('phone', numberTransformer(phone + ''));
 			formData.append('code', numberTransformer(code + ''));
 			!newPassPhase
-				? await axiosInstance.post('/user/verify-phone', formData)
-				: await axiosInstance.post('/auth/check-code', formData);
+				? await axios.post('/user/verify-phone', formData)
+				: await axios.post('/auth/check-code', formData);
 			$signingStep = 'password';
 		} catch (error) {
-			contentHandler(event).errorReceived(error);
+			contentHandler(e).errorReceived(error);
 		}
 	};
-	const passwordHandler = async (event: { target: HTMLButtonElement }) => {
-		contentHandler(event).sent();
+	const passwordHandler = async (e) => {
+		contentHandler(e).sent();
 		if (password !== password2) {
-			event.target.disabled = false;
-			event.target.textContent = 'ارسال دوباره';
+			e.target.disabled = false;
+			e.target.textContent = 'ارسال دوباره';
 			Toastify(ToastifyConfig('رمزها مطابقت ندارند')).showToast();
 		} else {
 			try {
@@ -74,25 +84,29 @@
 				if (newPassPhase) formData.append('code', numberTransformer(code + ''));
 				formData.append('password', password);
 				!newPassPhase
-					? await axiosInstance.post('/user/create', formData)
-					: await axiosInstance.patch('/auth/change-password', formData);
+					? await axios.post('/user/create', formData)
+					: await axios.patch('/auth/change-password', formData);
 				newPassPhase = false;
 				$signingStep = 'login';
 			} catch (error) {
-				contentHandler(event).errorReceived(error);
+				contentHandler(e).errorReceived(error);
 			}
 		}
 	};
-	const loginHandler = async (event: { target: HTMLButtonElement }) => {
-		contentHandler(event).sent();
+	const loginHandler = async (e) => {
+		contentHandler(e).sent();
 		try {
 			const formData = new FormData();
 			formData.append('phone', numberTransformer(phone + ''));
 			formData.append('password', password);
-			await axiosInstance.post('/auth/login', formData);
-			alert('خوش آمدید');
+			const res = await axios.post('/auth/login', formData);
+			store(res.data.token);
+			$token = res.data.token;
+			localStorage.setItem('token', res.data.token);
+			routeToPage('./dashboard', true);
+			e.target.disabled = true;
 		} catch (error) {
-			contentHandler(event).errorReceived(error);
+			contentHandler(e).errorReceived(error);
 		}
 	};
 </script>
@@ -152,6 +166,7 @@
 				$signingStep = 'phone';
 				newPassPhase = true;
 			}}>فراموشی رمز</button
-		> <button class="btn mt-4 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
+		>
+		<button class="btn mt-4 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
 	</form>
 </Signing>

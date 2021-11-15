@@ -1,4 +1,6 @@
-const ToastifyConfig = (text: string) => {
+import type { Options } from 'toastify-js';
+
+const ToastifyConfig = (text: string): Options => {
 	return {
 		text,
 		duration: 3000,
@@ -6,12 +8,7 @@ const ToastifyConfig = (text: string) => {
 		close: true,
 		gravity: 'top', // `top` or `bottom`
 		position: 'center', // `left`, `center` or `right`
-		stopOnFocus: true, // Prevents dismissing of toast on hover
-		style: {
-			background: '#fff',
-			color: '#DF6531',
-			borderRadius: '12px'
-		}
+		stopOnFocus: true // Prevents dismissing of toast on hover
 	};
 };
 

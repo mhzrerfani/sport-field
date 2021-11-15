@@ -1,13 +1,30 @@
 <script>
 	import Logo from '$lib/Logo.svelte';
 	import { fade } from 'svelte/transition';
-	import { signingStep } from '../stores';
+	import routeToPage from '../helper/routing';
+	import { signingStep, loading } from '../stores';
+	import { onMount } from 'svelte';
+	let userState, href;
 
+	onMount(async () => {
+		userState = await localStorage.getItem('token');
+		return userState ? (href = './dashboard') : (href = './signing');
+	});
 	const signUp = () => {
-		$signingStep = 'phone';
+		if (localStorage.getItem('token')) {
+			$loading = true;
+			return routeToPage('./dashboard', true);
+		} else {
+			return ($signingStep = 'phone');
+		}
 	};
 	const logIn = () => {
-		$signingStep = 'login';
+		if (localStorage.getItem('token')) {
+			$loading = true;
+			return routeToPage('./dashboard', true);
+		} else {
+			return ($signingStep = 'login');
+		}
 	};
 </script>
 
@@ -15,14 +32,16 @@
 	<title>باشگاه</title>
 </svelte:head>
 <div
+	style="background: rgb(223, 90, 33);
+			background: linear-gradient(90deg, rgba(223, 90, 33, 1) 0%, rgba(233, 121, 74, 1) 100%);"
 	in:fade={{ duration: 400, delay: 400 }}
 	out:fade={{ duration: 400 }}
 	class="flex flex-col h-screen f-full"
 >
 	<header class="flex justify-between mx-7 mt-7  realtive">
 		<div class="flex gap-4 text-white text-lg">
-			<a href="/signing" on:click={signUp}>ثبت نام</a>
-			<a href="/signing" on:click={logIn}>ورود</a>
+			<a {href} on:click={signUp}>ثبت نام</a>
+			<a {href} on:click={logIn}>ورود</a>
 		</div>
 		<Logo />
 		<svg
@@ -44,7 +63,7 @@
 	<div class="flex flex-col gap-8 text-white self-center mt-40 items-center">
 		<h2 class="text-4xl">فرصتو از دست نده</h2>
 		<h3 class="text-xl">
-			همین الان سانسو <a href="/signing" class="btn mx-2 px-7 py-3">رزرو</a>کن...
+			همین الان سانسو <a {href} class="btn mx-2 px-7 py-3">رزرو</a>کن...
 		</h3>
 	</div>
 	<div class="w-full flex justify-center mt-24">

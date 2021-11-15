@@ -4,8 +4,9 @@ const config = {
 
 	theme: {
 		fontFamily: {
-			vazir: ['bardiya', 'vazir']
+			vazir: ['vazir']
 		},
+
 		extend: {
 			colors: {
 				orange: '#DF6531',

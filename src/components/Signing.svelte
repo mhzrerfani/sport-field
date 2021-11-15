@@ -7,7 +7,9 @@
 <div
 	in:fade={{ duration: 400, delay: 400 }}
 	out:fade={{ duration: 400 }}
-	class=" relative w-full h-full flex justify-center flex-col overflow-hidden"
+	class=" relative w-full min-h-screen flex justify-center flex-col overflow-hidden"
+	style="background: rgb(223, 90, 33);
+			background: linear-gradient(90deg, rgba(223, 90, 33, 1) 0%, rgba(233, 121, 74, 1) 100%);"
 >
 	<svg class="absolute w-full h-80 top-0" xmlns="http://www.w3.org/2000/svg"
 		><path
@@ -35,6 +37,3 @@
 		{/if}
 	</div>
 </div>
-
-<style>
-</style>

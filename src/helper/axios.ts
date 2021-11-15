@@ -10,6 +10,6 @@ axiosInstance.interceptors.request.use(async function (config) {
 		config.headers['x-access-token'] = token;
 		return config;
 	}
-}, undefined);
+}, null);
 
 export default axiosInstance;
