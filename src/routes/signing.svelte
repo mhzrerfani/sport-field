@@ -10,7 +10,7 @@
 	import store from '../helper/token';
 	import { onMount } from 'svelte';
 	import { getLocalStorage } from '../utils/window';
-	axios.defaults.baseURL = 'http://localhost:3000/';
+	axios.defaults.baseURL = 'https://api.salonbesat.ir';
 
 	let name: string,
 		phone: number,
