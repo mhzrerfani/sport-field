@@ -12,6 +12,7 @@
 	import { get } from '../helper/token';
 	import { isAdmin, loading } from '../stores';
 	import { onMount } from 'svelte';
+	import { getLocalStorage } from '../utils/window';
 
 	onMount(() => {
 		$loading = false;
@@ -21,7 +22,7 @@
 
 	$isAdmin = user_is_admin;
 
-	if (localStorage.getItem('token') == null) {
+	if (getLocalStorage().getItem('token') == null) {
 		routeToPage('./signing', false);
 	}
 </script>

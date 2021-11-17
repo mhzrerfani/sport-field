@@ -8,12 +8,13 @@
 	import { get as getToken } from '../helper/token';
 	import routeToPage from '../helper/routing';
 	import { isAdmin, loading } from '../stores';
+	import { getLocalStorage } from '../utils/window';
 
 	onMount(() => {
 		const { user_is_admin } = getToken();
 		$isAdmin = user_is_admin;
 
-		if (localStorage.getItem('token') == null) {
+		if (getLocalStorage().getItem('token') == null) {
 			routeToPage('./signing', false);
 		}
 	});

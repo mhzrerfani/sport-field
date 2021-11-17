@@ -6,7 +6,7 @@
 	import dayjs from 'dayjs';
 	import jalaliday from 'jalaliday';
 	import { globalStore } from '../stores';
-	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(jalaliday);
 	dayjs.locale('fa');

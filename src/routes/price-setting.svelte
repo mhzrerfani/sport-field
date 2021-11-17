@@ -7,6 +7,7 @@
 	import { get } from '../helper/token';
 	import { onMount } from 'svelte';
 	import NewPrices from '../components/NewPrices.svelte';
+	import { getLocalStorage } from '../utils/window';
 
 	const { user_is_admin } = get();
 
@@ -14,7 +15,7 @@
 	onMount(() => {
 		$loading = false;
 	});
-	if (localStorage.getItem('token') == null) {
+	if (getLocalStorage().getItem('token') == null) {
 		routeToPage('./signing', false);
 	}
 </script>

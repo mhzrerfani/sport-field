@@ -1,9 +1,10 @@
 import { token } from '../stores';
 import jwt_decode from 'jwt-decode';
+import { getLocalStorage } from '../utils/window';
 
 export const store = (t) => {
-	if (localStorage.getItem('token')) localStorage.removeItem('token');
-	return localStorage.setItem('token', t);
+	if (getLocalStorage().getItem('token')) getLocalStorage().removeItem('token');
+	return getLocalStorage().setItem('token', t);
 };
 export const get = () => {
 	if (token) {
@@ -16,7 +17,7 @@ export const get = () => {
 	return;
 };
 // export const check = () => {
-// 	if (!localStorage.getItem('token') && !token) {
+// 	if (!getLocalStorage().getItem('token') && !token) {
 
 // 	}
 // }

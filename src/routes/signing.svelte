@@ -9,6 +9,7 @@
 	import numberTransformer from '../helper/numberTransformer';
 	import store from '../helper/token';
 	import { onMount } from 'svelte';
+	import { getLocalStorage } from '../utils/window';
 	axios.defaults.baseURL = 'http://localhost:3000/';
 
 	let name: string,
@@ -102,7 +103,7 @@
 			const res = await axios.post('/auth/login', formData);
 			store(res.data.token);
 			$token = res.data.token;
-			localStorage.setItem('token', res.data.token);
+			getLocalStorage().setItem('token', res.data.token);
 			routeToPage('./dashboard', true);
 			e.target.disabled = true;
 		} catch (error) {

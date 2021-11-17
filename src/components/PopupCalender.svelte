@@ -3,7 +3,7 @@
 	import dayjs from 'dayjs';
 	import jalaliday from 'jalaliday';
 	import { globalStore } from '../stores';
-	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
 	import Textfield from '@smui/textfield';
 	import Icon from '@smui/textfield/icon';
