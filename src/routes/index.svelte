@@ -4,14 +4,15 @@
 	import routeToPage from '../helper/routing';
 	import { signingStep, loading } from '../stores';
 	import { onMount } from 'svelte';
+	import { getLocalStorage } from '../utils/window';
 	let userState, href;
 
 	onMount(async () => {
-		userState = await localStorage.getItem('token');
+		userState = await getLocalStorage().getItem('token');
 		return userState ? (href = './dashboard') : (href = './signing');
 	});
 	const signUp = () => {
-		if (localStorage.getItem('token')) {
+		if (getLocalStorage().getItem('token')) {
 			$loading = true;
 			return routeToPage('./dashboard', true);
 		} else {
@@ -19,7 +20,7 @@
 		}
 	};
 	const logIn = () => {
-		if (localStorage.getItem('token')) {
+		if (getLocalStorage().getItem('token')) {
 			$loading = true;
 			return routeToPage('./dashboard', true);
 		} else {

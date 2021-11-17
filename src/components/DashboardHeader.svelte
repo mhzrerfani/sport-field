@@ -5,6 +5,7 @@
 	import List, { Item } from '@smui/list';
 	import routeToPage from '../helper/routing';
 	import { isAdmin, loading } from '../stores';
+	import { getLocalStorage } from '../utils/window';
 
 	let open = false;
 	let active = location.pathname;
@@ -76,7 +77,7 @@
 		<svg
 			class="cursor-pointer"
 			on:click={() => {
-				localStorage.removeItem('token');
+				getLocalStorage().removeItem('token');
 				routeToPage('./', true);
 			}}
 			width="31"

@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
+import { getLocalStorage } from './utils/window';
 export const selectedDay = writable();
-export const token = writable(localStorage.getItem('token') || '');
+export const token = writable(getLocalStorage().getItem('token') || '');
 export const signingStep = writable('login');
 export const sport = writable();
 export const ball = writable();
