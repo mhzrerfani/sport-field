@@ -1,20 +1,22 @@
 <script>
+	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+
 	import DashboardHeader from '../components/DashboardHeader.svelte';
 	import Username from '../components/Username.svelte';
 	import HistoryTable from '../components/HistoryTable.svelte';
-	import { fade } from 'svelte/transition';
+	import { get as getToken } from '../helper/token';
 	import routeToPage from '../helper/routing';
 	import { isAdmin, loading } from '../stores';
-	import { get } from '../helper/token';
-	import { onMount } from 'svelte';
 
-	const { user_is_admin } = get();
+	onMount(() => {
+		const { user_is_admin } = getToken();
+		$isAdmin = user_is_admin;
 
-	$isAdmin = user_is_admin;
-
-	if (localStorage.getItem('token') == null) {
-		routeToPage('./signing', false);
-	}
+		if (localStorage.getItem('token') == null) {
+			routeToPage('./signing', false);
+		}
+	});
 </script>
 
 <div

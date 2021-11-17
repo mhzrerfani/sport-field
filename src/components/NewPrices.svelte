@@ -11,13 +11,26 @@
 		volleyball_price = '',
 		basketball_price = '',
 		ball_price = '';
-	let submitPrices = () => {
+	let submitPrices = async (e) => {
+		$loading = true;
 		const formData = new FormData();
-		formData.append('football_price', football_price);
-		formData.append('volleyball_price', volleyball_price);
-		formData.append('basketball_price', basketball_price);
-		formData.append('ball_price', ball_price);
-		const req = axiosInstance.post('/admin/static_values', formData);
+		const prices = [football_price, volleyball_price, basketball_price, ball_price];
+		const pricesName = ['football_price', 'volleyball_price', 'basketball_price', 'ball_price'];
+		const newPrices = prices.reduce((p, c, i) => {
+			if (c) {
+				return [...p, { name: pricesName[i], value: c }];
+			} else {
+				return [...p];
+			}
+		}, []);
+		console.log(newPrices);
+		formData.append('fields', JSON.stringify(newPrices));
+		const req = await axiosInstance.patch('/admin/static_values', formData);
+		e.target.textContent = 'قیمت ها ثبت شده اند';
+		setTimeout(() => {
+			e.target.textContent = 'ثبت قیمت ها';
+		}, 2000);
+		$loading = false;
 	};
 	onMount(async () => {
 		$loading = false;

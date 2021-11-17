@@ -4,12 +4,12 @@
 	"description": "an App for reserving sport field anytime, anywhere",
 	"icons": [
 		{
-			"src": "favicon",
+			"src": "./favicon.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		}
 	],
-	"start_url": "/pwa-examples/js13kpwa/index.html",
+	"start_url": "/",
 	"display": "fullscreen",
 	"theme_color": "#DF6531",
 	"background_color": "#DF6531"

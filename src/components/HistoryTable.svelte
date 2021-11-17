@@ -5,10 +5,15 @@
 	import { onMount } from 'svelte';
 	import dayjs from 'dayjs';
 	import jalaliday from 'jalaliday';
-	import { isAdmin, newReserve, loading } from '../stores';
+	import { isAdmin, newReserve, loading, from, to } from '../stores';
 	import { get } from '../helper/token';
 	import Textfield from '@smui/textfield';
 	import Icon from '@smui/textfield/icon';
+	import PopupCalendar from '../components/PopupCalender.svelte';
+	import Select, { Option } from '@smui/select';
+	import Icon from '@smui/select/icon';
+	import Dialog, { Title, Content, Actions } from '@smui/dialog';
+	import Button, { Label } from '@smui/button';
 
 	const { user_is_admin } = get();
 	$isAdmin = user_is_admin;
@@ -30,48 +35,54 @@
 		8: '۲۰ - ۲۱:۳۰',
 		9: '۲۱:۳۰ - ۲۳'
 	};
-
-	let items = [];
-	let rowsPerPage = 10;
-	let currentPage = 0;
-	let from = '',
+	$: console.log(from, to);
+	let items = [],
+		selectedReservation,
+		open = false,
+		rowsPerPage = 10,
+		currentPage = 0,
+		from = '',
 		to = '',
-		name = '',
+		phone = '',
 		status = '',
-		phone = '';
-	let listFilter = async () => {
-		// $loading = true;
-		const fromQuery = `from=${dayjs(from, { jalali: true }, [
-			'YYYY-MM-DD',
-			'YYYY-M-DD',
-			'YYYY-MM-D',
-			'YYYY-M-D'
-		])
-			.calendar('gregory')
-			.format('YYYY-MM-DD')}`;
-		const toQuery = `to=${dayjs(to, { jalali: true }, [
-			'YYYY-MM-DD',
-			'YYYY-M-DD',
-			'YYYY-MM-D',
-			'YYYY-M-D'
-		])
-			.calendar('gregory')
-			.format('YYYY-MM-DD')}`;
+		statusOptions = ['کامل', 'موقت'];
 
-		const phoneQuery = `phone=${phone}`;
-		const statusQuery = `status=${status}`;
-		const query = 
-		const updatedList = await axiosInstance.get(`/admin/cancel-reserve?${fromQuery}`);
-		items = await updatedList.data;
+	let listFilter = async () => {
+		$loading = true;
+		let params = {
+			from: from
+				? dayjs(from, { jalali: true }, ['YYYY-MM-DD', 'YYYY-M-DD', 'YYYY-MM-D', 'YYYY-M-D'])
+						.calendar('gregory')
+						.format('YYYY-MM-DD')
+				: undefined,
+			to: to
+				? dayjs(to, { jalali: true }, ['YYYY-MM-DD', 'YYYY-M-DD', 'YYYY-MM-D', 'YYYY-M-D'])
+						.calendar('gregory')
+						.format('YYYY-MM-DD')
+				: undefined,
+			phone,
+			status: status == 'کامل' ? 'completed' : status == 'موقت' ? 'temp' : ''
+		};
+		for (let param in params) {
+			if (!params[param]) delete params[param];
+		}
+		const { data: updatedList } = await axiosInstance.get('/admin/reserves-history', { params });
+		items = updatedList.data;
 		$loading = false;
 	};
-	let removeReservation = async (e) => {
+	let removeSelected = (e) => {
+		open = true;
+		selectedReservation = e.target.nextElementSibling.id;
+		console.log(selectedReservation);
+	};
+	let removeConfirmed = async () => {
 		$loading = true;
 		const formData = new FormData();
-		formData.append('reserve_id', e.target.id);
+		formData.append('reserve_id', selectedReservation);
 		const res = await axiosInstance.delete('/admin/cancel-reserve', { data: formData });
 		const updatedList = await (await axiosInstance.get(endpoint)).data;
 		items = await updatedList.data;
+		open = false;
 		$loading = false;
 	};
 
@@ -98,29 +109,36 @@
 		style="direction: ltr;width: 663px; margin: 0 auto"
 	>
 		<div class="w-40">
-			<Textfield class="shaped-filled" variant="filled" bind:value={phone} label="شماره تلفن" />
+			<Textfield bind:value={phone} label="شماره تلفن" />
 		</div>
 
-		<div class="w-36">
-			<Textfield class="shaped-filled" variant="filled" bind:value={from} label="از">
-				<Icon class="material-icons" slot="leadingIcon">event</Icon>
-			</Textfield>
+		<PopupCalendar bind:value={from} title="از" />
+		<PopupCalendar bind:value={to} title="تا" />
+
+		<Select class="w-28" bind:value={status} label="وضعیت">
+			<Option value="" />
+			{#each statusOptions as option}
+				<Option value={option}>{option}</Option>
+			{/each}
+		</Select>
+		<div
+			class=" cursor-pointer"
+			on:click={() => {
+				from = '';
+				to = '';
+				status = '';
+				phone = '';
+			}}
+		>
+			<Icon class="material-icons" slot="trailingIcon">delete</Icon>
 		</div>
-		<div class="w-36">
-			<Textfield class="shaped-filled" variant="filled" bind:value={to} label="تا">
-				<Icon class="material-icons" slot="leadingIcon">event</Icon>
-			</Textfield>
-		</div>
-		<div class="w-28">
-			<Textfield class="shaped-filled" variant="filled" bind:value={status} label="وضعیت" />
-		</div>
-		<button class="bg-orange rounded-t-xl text-white px-3" on:click={listFilter}>جستجو</button>
+		<button class="bg-orange rounded-xl text-white px-3" on:click={listFilter}>جستجو</button>
 	</div>
 {/if}
-<div class="flex justify-center">
+<div class="flex justify-center mt-5">
 	<DataTable
 		table$aria-label="Todo list"
-		style="width: 663px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
+		style="width: 700px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
 	>
 		<Head style="direction: rtl;">
 			<Row>
@@ -156,13 +174,27 @@
 					>
 					{#if $isAdmin}
 						<Cell style="text-align: center; cursor: pointer;">
-							<img
-								style="cursor: pointer;"
-								src="https://img.icons8.com/color/48/000000/delete-sign--v1.png"
-								alt="delete"
-								id={item.reserve_id}
-								on:click={removeReservation}
-							/>
+							<Button on:click={removeSelected}>
+								<img
+									class="w-8 h-8"
+									style="cursor: pointer;"
+									id={item.reserve_id}
+									src="https://img.icons8.com/color/48/000000/delete-sign--v1.png"
+									alt="delete"
+								/>
+							</Button>
+							<Dialog bind:open aria-labelledby="simple-title" aria-describedby="simple-content">
+								<Title id="simple-title">پاک کردن رزرو</Title>
+								<Content id="simple-content">آیا مطمئن هستید؟</Content>
+								<Actions>
+									<Button on:click={() => (open = false)}>
+										<Label>خیر</Label>
+									</Button>
+									<Button on:click={removeConfirmed}>
+										<Label>بله</Label>
+									</Button>
+								</Actions>
+							</Dialog>
 						</Cell>
 					{/if}
 				</Row>

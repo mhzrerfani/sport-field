@@ -2,7 +2,7 @@
 <html lang="fa">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="manifest" href="manifest.json" />
+		<link rel="manifest" crossorigin="use-credentials" href="manifest.json" />
 		<link rel="icon" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="../node_modules/toastify-js/src/toastify.css" />
@@ -18,7 +18,10 @@
 		<link rel="stylesheet" href="/smui.css" />
 		%svelte.head%
 	</head>
-	<body class="font-vazir overflow-x-hidden" style="direction: rtl; transition-duration: 0.3s">
+	<body
+		class="font-vazir overflow-x-hidden"
+		style="direction: rtl; transition-duration: 0.3s, fontFamily: vazir"
+	>
 		<div id="svelte">%svelte.body%</div>
 	</body>
 </html>
