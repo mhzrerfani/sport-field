@@ -12,9 +12,10 @@
 			background: linear-gradient(90deg, rgba(223, 90, 33, 1) 0%, rgba(233, 121, 74, 1) 100%);"
 >
 	<svg
-		class="absolute w-screen h-80 top-0"
+		class="absolute h-80 left-0 top-0 w-screen"
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 1440 320"
+		viewBox="0 0 1440 300"
+		preserveAspectRatio="none"
 		><path
 			fill="#E4F5FB"
 			fill-opacity="1"
