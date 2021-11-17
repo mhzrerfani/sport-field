@@ -3,6 +3,6 @@ export const getLocalStorage = () =>
 		? localStorage
 		: {
 				setItem: (key: string, value: string) => null,
-				getItem: (key: string) => null,
+				getItem: (key: string) => undefined,
 				removeItem: (key: string) => null
 		  };
