@@ -45,8 +45,8 @@
 		to = '',
 		phone = '',
 		status = '',
-		statusOptions = ['کامل', 'موقت'];
-
+		statusOptions = ['کامل', 'موقت'],
+		table;
 	let listFilter = async () => {
 		$loading = true;
 		let params = {
@@ -90,6 +90,7 @@
 		$loading = true;
 		const res = await (await axiosInstance.get(endpoint)).data;
 		items = await res.data;
+		table = table.$$.ctx[9].firstChild;
 		$loading = false;
 	});
 
@@ -137,6 +138,7 @@
 {/if}
 <div class="flex justify-center mt-5">
 	<DataTable
+		bind:this={table}
 		table$aria-label="Todo list"
 		style="width: 700px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
 	>

@@ -1,6 +1,6 @@
 <script>
 	import { signingStep } from '../stores';
-	import players from '../assets/img/loging-players.svg';
+	import players from '../assets/img/loging-players.png';
 	import { fade } from 'svelte/transition';
 </script>
 
@@ -11,11 +11,14 @@
 	style="background: rgb(223, 90, 33);
 			background: linear-gradient(90deg, rgba(223, 90, 33, 1) 0%, rgba(233, 121, 74, 1) 100%);"
 >
-	<svg class="absolute w-full h-80 top-0" xmlns="http://www.w3.org/2000/svg"
+	<svg
+		class="absolute w-screen h-80 top-0"
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 1440 320"
 		><path
 			fill="#E4F5FB"
 			fill-opacity="1"
-			d="M0,192L80,202.7C160,213,320,235,480,234.7C640,235,800,213,960,218.7C1120,224,1280,256,1360,272L1440,288L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+			d="M0,128L80,149.3C160,171,320,213,480,218.7C640,224,800,192,960,165.3C1120,139,1280,117,1360,106.7L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
 		/></svg
 	>
 	<div class="realtive flex justify-around z-50">

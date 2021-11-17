@@ -23,13 +23,13 @@ const config = {
 				include: ['just-throttle', 'dayjs']
 			},
 			build: {
-                target: 'es2019',
-                sourcemap: false,
-                brotliSize: false,
-                rollupOptions: {
-                    inlineDynamicImports: true,
-                },
-            }
+				target: 'es3',
+				sourcemap: false,
+				brotliSize: false,
+				rollupOptions: {
+					inlineDynamicImports: true
+				}
+			}
 		},
 		prerender: {
 			enabled: false
