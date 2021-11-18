@@ -8,9 +8,7 @@
 	import { onMount } from 'svelte';
 	import NewPrices from '../components/NewPrices.svelte';
 	import { getLocalStorage } from '../utils/window';
-
 	const { user_is_admin } = get();
-
 	$isAdmin = user_is_admin;
 	onMount(() => {
 		$loading = false;

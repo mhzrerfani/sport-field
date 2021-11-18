@@ -169,7 +169,7 @@
 					>
 					<Cell style="text-align: center;">{timeSlots[`${item.reserve_timeslot}`]}</Cell>
 					<Cell style="text-align: center;"
-						>({item.need_ball ? 'بله' : 'خیر'}) {item.Field['field_name']}</Cell
+						>({item.need_ball ? 'بله' : 'خیر'}) {item.Field?.field_name || 'نامشخص'}</Cell
 					>
 					<Cell style="text-align: center;"
 						>{item.reserve_status == 'completed' ? 'کامل' : 'موقت'}</Cell
