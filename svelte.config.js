@@ -23,7 +23,7 @@ const config = {
 				include: ['just-throttle', 'dayjs']
 			},
 			build: {
-				target: 'es3',
+				target: 'es2019',
 				sourcemap: false,
 				brotliSize: false,
 				rollupOptions: {

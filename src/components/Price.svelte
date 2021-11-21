@@ -5,18 +5,14 @@
 
 	let res, total, prices, sportPrice, ballPrice;
 	onMount(async () => {
-		res = await (await axiosInstance.get('/public/static-values')).data;
-		prices = await res['statics'].reduce((o, cur) => ({ ...o, [cur.name]: cur.value }), {});
+		res = await (await axiosInstance.get('/public/fields')).data.data;
+		prices = await res.reduce((o, cur) => ({ ...o, [cur.field_name]: cur.field_price }), {});
+		prices.ball_price = (await axiosInstance.get('/public/static-values')).data.statics.filter(item => item.name === 'ball_price')[0].value;
 	});
 	$: if (prices) {
-		sportPrice =
-			$sport == 'فوتبال'
-				? prices.football_price
-				: $sport == 'والیبال'
-				? prices.volleyball_price
-				: prices.basketball_price;
+		sportPrice = prices[$sport];
 		ballPrice = $ball == 'بله' ? prices.ball_price : 0;
-		total = sportPrice + ballPrice;
+		total = Number(sportPrice) + Number(ballPrice);
 	}
 	$: $cost = total;
 </script>

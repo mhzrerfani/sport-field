@@ -13,8 +13,8 @@
 	let res, fields;
 	let button;
 	onMount(async () => {
-		res = await (await axiosInstance.get('/public/static-values')).data;
-		fields = await res['fields'].reduce((o, cur) => ({ ...o, [cur.field_name]: cur.field_id }), {});
+		res = await (await axiosInstance.get('/public/fields')).data;
+		fields = await res.data.reduce((o, cur) => ({ ...o, [cur.field_name]: cur.field_id }), {});
 	});
 
 	const payingPage = async () => {
@@ -47,9 +47,12 @@
 				const { authority } = await payRes.data.data;
 				location.href = `https://www.zarinpal.com/pg/StartPay/${authority})`;
 			}
-		} else {
+		} else if (!timeslot_id) {
 			$loading = false;
 			Toastify(ToastifyConfig('لطفا سانس خود را انتخاب کنید')).showToast();
+		} else {
+			$loading = false;
+			Toastify(ToastifyConfig('لطفا ورزش مورد نظر خود را انتخاب کنید')).showToast();
 		}
 	};
 </script>

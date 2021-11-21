@@ -35,7 +35,7 @@
 		8: '۲۰ - ۲۱:۳۰',
 		9: '۲۱:۳۰ - ۲۳'
 	};
-	$: console.log(from, to);
+
 	let items = [],
 		selectedReservation,
 		open = false,

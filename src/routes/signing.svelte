@@ -11,7 +11,7 @@
 	import store from '../helper/token';
 	import { onMount } from 'svelte';
 	import { getLocalStorage } from '../utils/window';
-	axios.defaults.baseURL = 'https://api.salonbesat.ir';
+	axios.defaults.baseURL = 'http://localhost:8026';
 
 	let name: string,
 		phone: number,
@@ -159,16 +159,17 @@
 		out:fade={{ duration: 400 }}
 		slot="login"
 		class="flex flex-col w-min gap-6 justify-center items-center"
+		on:submit|preventDefault={loginHandler}
 	>
 		<input class="input" type="text" placeholder="شماره همراه" bind:value={phone} />
 		<input class="input" type="password" placeholder="رمز" bind:value={password} />
+		<button type="submit" class="btn mt-4 px-3 py-2">ورود</button>
 		<button
-			class=" self-start text-white"
+			class="text-white"
 			on:click|preventDefault={() => {
 				$signingStep = 'phone';
 				newPassPhase = true;
 			}}>فراموشی رمز</button
 		>
-		<button class="btn mt-4 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
 	</form>
 </Signing>

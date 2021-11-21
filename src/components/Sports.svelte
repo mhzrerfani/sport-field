@@ -1,10 +1,27 @@
 <script lang="ts">
 	import SegmentedButton, { Segment } from '@smui/segmented-button';
-	import Button from '@smui/button';
 	import { Label } from '@smui/common';
 	import { sport } from '../stores';
-	let choices = ['والیبال', 'فوتبال', 'بسکتبال'];
-	let selected = 'فوتبال';
+	import { onMount } from 'svelte';
+	import axiosInstance from '../helper/axios';
+
+	interface publicFields {
+		data: {
+			field_id: string;
+			field_name: string;
+			field_price: number;
+		}[];
+		success: boolean;
+	}
+	let choices: string[] = [];
+	let selected;
+	onMount(async () => {
+		const res = await axiosInstance.get('/public/fields');
+		console.log(res.data);
+		choices = (res.data as publicFields).data.map((field) => {
+			return field.field_name;
+		});
+	});
 	$: $sport = selected;
 </script>
 
