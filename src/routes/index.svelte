@@ -68,8 +68,8 @@
 		</h3>
 	</div>
 	<div class="w-full flex justify-center mt-24">
-		<a href="#" class="btn px-3 py-6 text-3xl font-medium" title="دانلود برنامه اندروید"
-			>دانلود برنامه اندروید</a
+		<button class="btn px-3 py-6 text-3xl font-medium" title="دانلود برنامه اندروید"
+			>دانلود برنامه اندروید</button
 		>
 	</div>
 	<div />

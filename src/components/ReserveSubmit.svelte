@@ -5,6 +5,7 @@
 	import axiosInstance from '../helper/axios';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
+	import 'toastify-js/src/toastify.css';
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import dayjs from 'dayjs';
 	import { isAdmin, newReserve, loading } from '../stores';

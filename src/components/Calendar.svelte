@@ -143,10 +143,4 @@
 	.day.otherMonth {
 		color: #ccc;
 	}
-
-	.events {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
 </style>

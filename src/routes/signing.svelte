@@ -5,6 +5,7 @@
 	import axios from 'axios';
 	import routeToPage from '../helper/routing';
 	import Toastify from 'toastify-js';
+	import 'toastify-js/src/toastify.css';
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import numberTransformer from '../helper/numberTransformer';
 	import store from '../helper/token';

@@ -155,10 +155,4 @@
 	.day .today {
 		font-weight: bold;
 	}
-
-	.events {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
 </style>
