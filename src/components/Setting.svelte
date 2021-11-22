@@ -101,7 +101,7 @@
 				<Row>
 					<Cell style="width:50px">{field.field_name}</Cell>
 					<Cell style="text-align: center;" numeric>
-						<input bind:value={field.field_price} class="rounded-md p-1" type="number" />200
+						<input bind:value={field.field_price} class="rounded-md p-1" type="number" />
 					</Cell>
 					<Cell style="text-align: center;">
 						<button
