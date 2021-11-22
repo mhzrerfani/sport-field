@@ -88,12 +88,10 @@
 	};
 
 	let downloadExcel = () => {
-		$loading = true;
-		let binaryWS = XLSX.utils.json_to_sheet(items);
-		var wb = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(wb, binaryWS, 'Binary values');
-		$loading = false;
-		XLSX.writeFile(wb, 'history.xlsx');
+		const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+		const wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+		return XLSX.writeFile(wb, `history(${dayjs().calendar('jalali').format('YYYY-MM-DD')}).xlsx`);
 	};
 	onMount(async () => {
 		$loading = true;
@@ -247,10 +245,11 @@
 			>
 		</Pagination>
 	</DataTable>
-
-	<button class="px-3 py-2 text-white bg-green rounded-md mt-5" on:click={downloadExcel}
-		>خروجی اکسل</button
-	>
+	{#if $isAdmin}
+		<button class="px-3 py-2 text-white bg-green rounded-md mt-5" on:click={downloadExcel}
+			>خروجی اکسل</button
+		>
+	{/if}
 </div>
 
 <style>
