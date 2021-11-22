@@ -3,6 +3,9 @@ const config = {
 	purge: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
+		screens: {
+			b1: { max: '1018px' }
+		},
 		fontFamily: {
 			vazir: ['vazir']
 		},

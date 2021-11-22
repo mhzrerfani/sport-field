@@ -1,82 +1,146 @@
 <script>
-	import Select from 'svelte-select';
 	import dayjs from 'dayjs';
-	import { globalStore, timeslot, newReserve } from '../stores';
+	import { globalStore, timeslot, newReserve, loading } from '../stores';
 	import axiosInstance from '../helper/axios';
 	import { onMount } from 'svelte';
+	import SegmentedButton, { Segment } from '@smui/segmented-button';
+	import { Label } from '@smui/common';
+	import Select, { Option } from '@smui/select';
 
 	dayjs().format('YYYY-MM-DD');
 
-	let reservation, selectValue, newDate;
+	let reservation, value;
+
+	let timeSlots = {
+		0: '۸ - ۹:۳۰',
+		1: '۹:۳۰ - ۱۱',
+		2: '۱۱ - ۱۲:۳۰',
+		3: '۱۲:۳۰ - ۱۴',
+		4: '۱۴ - ۱۵:۳۰',
+		5: '۱۵:۳۰ - ۱۷',
+		6: '۱۷ - ۱۸:۳۰',
+		7: '۱۸:۳۰ - ۲۰',
+		8: '۲۰ - ۲۱:۳۰',
+		9: '۲۱:۳۰ - ۲۳'
+	};
 
 	onMount(async () => {
+		$loading = true;
 		reservation = await (await axiosInstance.get('/reserve/reserves-status')).data;
+		if (reservation)
+			reserved = reservation[dayjs($globalStore.date).calendar('gregory').format('YYYY-MM-DD')];
+		if (reserved) {
+			reserved.forEach((slot) => {
+				if (timeSlots[slot.reserve_timeslot]) {
+					delete timeSlots[slot.reserve_timeslot];
+				}
+				choices = Object.values(timeSlots);
+			});
+		} else {
+			timeSlots = {
+				0: '۸ - ۹:۳۰',
+				1: '۹:۳۰ - ۱۱',
+				2: '۱۱ - ۱۲:۳۰',
+				3: '۱۲:۳۰ - ۱۴',
+				4: '۱۴ - ۱۵:۳۰',
+				5: '۱۵:۳۰ - ۱۷',
+				6: '۱۷ - ۱۸:۳۰',
+				7: '۱۸:۳۰ - ۲۰',
+				8: '۲۰ - ۲۱:۳۰',
+				9: '۲۱:۳۰ - ۲۳'
+			};
+			choices = Object.values(timeSlots);
+		}
+		$loading = false;
 	});
 	newReserve.subscribe(async () => {
 		reservation = await (await axiosInstance.get('/reserve/reserves-status')).data;
+		if (reservation)
+			reserved = reservation[dayjs($globalStore.date).calendar('gregory').format('YYYY-MM-DD')];
+		if (reserved) {
+			reserved.forEach((slot) => {
+				if (timeSlots[slot.reserve_timeslot]) {
+					delete timeSlots[slot.reserve_timeslot];
+				}
+				choices = Object.values(timeSlots);
+			});
+		} else {
+			timeSlots = {
+				0: '۸ - ۹:۳۰',
+				1: '۹:۳۰ - ۱۱',
+				2: '۱۱ - ۱۲:۳۰',
+				3: '۱۲:۳۰ - ۱۴',
+				4: '۱۴ - ۱۵:۳۰',
+				5: '۱۵:۳۰ - ۱۷',
+				6: '۱۷ - ۱۸:۳۰',
+				7: '۱۸:۳۰ - ۲۰',
+				8: '۲۰ - ۲۱:۳۰',
+				9: '۲۱:۳۰ - ۲۳'
+			};
+			choices = Object.values(timeSlots);
+		}
 		$newReserve = false;
 	});
-	let items = [
-		{ value: '0', label: '۸ - ۹:۳۰', selectable: true },
-		{ value: '1', label: '۹:۳۰ - ۱۱', selectable: true },
-		{ value: '2', label: '۱۱ - ۱۲:۳۰', selectable: true },
-		{ value: '3', label: '۱۲:۳۰ - ۱۴', selectable: true },
-		{ value: '4', label: '۱۴ - ۱۵:۳۰', selectable: true },
-		{ value: '5', label: '۱۵:۳۰ - ۱۷', selectable: true },
-		{ value: '6', label: '۱۷ - ۱۸:۳۰', selectable: true },
-		{ value: '7', label: '۱۸:۳۰ - ۲۰', selectable: true },
-		{ value: '8', label: '۲۰ - ۲۱:۳۰', selectable: true },
-		{ value: '9', label: '۲۱:۳۰ - ۲۳', selectable: true }
-	];
 
-	function handleSelect(event) {
-		$timeslot = event.detail.value;
-	}
+	let choices = [];
+	let selected;
+	$: selected = value;
+	$: $timeslot = Object.keys(timeSlots).find((key) => timeSlots[key] === selected);
+	$: console.log($timeslot);
 	$: globalStore.subscribe(() => {
-		selectValue = '';
+		selected = '';
 		$timeslot = '';
 	});
-
 	let reserved;
 	$: if (reservation)
 		reserved = reservation[dayjs($globalStore.date).calendar('gregory').format('YYYY-MM-DD')];
 	$: if (dayjs($globalStore.date).isBefore(dayjs(), 'day')) {
-		items = items.map((slot) => {
-			slot.selectable = false;
-			return slot;
-		});
+		choices = [];
 	} else {
-		items = items.map((slot) => {
-			slot.selectable = true;
-			return slot;
-		});
+		choices = Object.values(timeSlots);
 	}
 	$: if (reserved) {
 		reserved.forEach((slot) => {
-			items[slot.reserve_timeslot].selectable = false;
+			if (timeSlots[slot.reserve_timeslot]) {
+				delete timeSlots[slot.reserve_timeslot];
+			}
 		});
+	} else {
+		timeSlots = {
+			0: '۸ - ۹:۳۰',
+			1: '۹:۳۰ - ۱۱',
+			2: '۱۱ - ۱۲:۳۰',
+			3: '۱۲:۳۰ - ۱۴',
+			4: '۱۴ - ۱۵:۳۰',
+			5: '۱۵:۳۰ - ۱۷',
+			6: '۱۷ - ۱۸:۳۰',
+			7: '۱۸:۳۰ - ۲۰',
+			8: '۲۰ - ۲۱:۳۰',
+			9: '۲۱:۳۰ - ۲۳'
+		};
 	}
 </script>
 
 <div class="flex flex-col items-center mt-20 justify-center gap-5">
 	<span>سانس خود را انتخاب کنید</span>
-	<div class="themed">
-		<Select
-			placeholder="سانس ها"
-			isClearable={false}
-			id="timeslots"
-			{items}
-			bind:value={selectValue}
-			on:select={handleSelect}
-		/>
+	<div class="mobile flex lg:hidden  justify-center">
+		<Select bind:value={selected} label="" style="direction:ltr">
+			{#each choices as choice}
+				<Option value={choice}>{choice}</Option>
+			{/each}
+		</Select>
+	</div>
+	<div class="desktop hidden lg:flex  justify-center">
+		<SegmentedButton
+			style="direction: ltr"
+			segments={choices}
+			let:segment
+			singleSelect
+			bind:selected
+		>
+			<Segment {segment}>
+				<Label>{segment}</Label>
+			</Segment>
+		</SegmentedButton>
 	</div>
 </div>
-
-<style>
-	.themed {
-		--border: 3px solid #df6531;
-		--borderRadius: 10px;
-		--placeholderColor: black;
-		width: 250px;
-	}
-</style>
