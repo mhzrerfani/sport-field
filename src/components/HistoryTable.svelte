@@ -14,6 +14,7 @@
 	import Icon from '@smui/select/icon';
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
 	import Button, { Label } from '@smui/button';
+	import XLSX from 'xlsx';
 
 	const { user_is_admin } = get();
 	$isAdmin = user_is_admin;
@@ -86,6 +87,14 @@
 		$loading = false;
 	};
 
+	let downloadExcel = () => {
+		$loading = true;
+		let binaryWS = XLSX.utils.json_to_sheet(items);
+		var wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, binaryWS, 'Binary values');
+		$loading = false;
+		XLSX.writeFile(wb, 'history.xlsx');
+	};
 	onMount(async () => {
 		$loading = true;
 		const res = await (await axiosInstance.get(endpoint)).data;
@@ -136,7 +145,7 @@
 		<button class="bg-orange rounded-xl text-white px-3" on:click={listFilter}>جستجو</button>
 	</div>
 {/if}
-<div class="flex justify-center mt-5">
+<div class="flex flex-col items-center justify-center mt-5">
 	<DataTable
 		bind:this={table}
 		table$aria-label="Todo list"
@@ -238,6 +247,10 @@
 			>
 		</Pagination>
 	</DataTable>
+
+	<button class="px-3 py-2 text-white bg-green rounded-md mt-5" on:click={downloadExcel}
+		>خروجی اکسل</button
+	>
 </div>
 
 <style>
