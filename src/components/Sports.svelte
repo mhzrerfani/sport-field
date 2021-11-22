@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SegmentedButton, { Segment } from '@smui/segmented-button';
 	import { Label } from '@smui/common';
-	import { sport } from '../stores';
+	import { loading, sport } from '../stores';
 	import { onMount } from 'svelte';
 	import axiosInstance from '../helper/axios';
 
@@ -16,11 +16,12 @@
 	let choices: string[] = [];
 	let selected;
 	onMount(async () => {
+		$loading = true;
 		const res = await axiosInstance.get('/public/fields');
-		console.log(res.data);
 		choices = (res.data as publicFields).data.map((field) => {
 			return field.field_name;
 		});
+		$loading = false;
 	});
 	$: $sport = selected;
 </script>

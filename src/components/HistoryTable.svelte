@@ -140,7 +140,7 @@
 	<DataTable
 		bind:this={table}
 		table$aria-label="Todo list"
-		style="width: 700px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
+		style="width: 750px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
 	>
 		<Head style="direction: rtl;">
 			<Row>

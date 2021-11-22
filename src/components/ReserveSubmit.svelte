@@ -24,7 +24,7 @@
 			need_ball = $ball == 'بله' ? true : false,
 			timeslot_id = $timeslot,
 			field_id = fields[$sport];
-		if (timeslot_id) {
+		if (timeslot_id && field_id) {
 			button.textContent = 'لطفا منتظر بمانید';
 			const formData = new FormData();
 			formData.append('reserve_date', reserve_date);
@@ -47,12 +47,9 @@
 				const { authority } = await payRes.data.data;
 				location.href = `https://www.zarinpal.com/pg/StartPay/${authority})`;
 			}
-		} else if (!timeslot_id) {
-			$loading = false;
-			Toastify(ToastifyConfig('لطفا سانس خود را انتخاب کنید')).showToast();
 		} else {
 			$loading = false;
-			Toastify(ToastifyConfig('لطفا ورزش مورد نظر خود را انتخاب کنید')).showToast();
+			Toastify(ToastifyConfig('اطلاعات را کامل وارد کنید')).showToast();
 		}
 	};
 </script>

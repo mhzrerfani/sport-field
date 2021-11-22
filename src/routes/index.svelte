@@ -1,14 +1,29 @@
-<script>
+<script lang="ts">
 	import Logo from '$lib/Logo.svelte';
 	import { fade } from 'svelte/transition';
 	import routeToPage from '../helper/routing';
 	import { signingStep, loading } from '../stores';
+	import axiosInstance from '../helper/axios';
 	import { onMount } from 'svelte';
 	import { getLocalStorage } from '../utils/window';
 	let userState, href;
 
+	interface contactinfo {
+		address?: string;
+		tel?: number;
+	}
+	let contactInfo = {
+		address: '',
+		tel: 0
+	} as contactinfo;
+
 	onMount(async () => {
+		$loading = true;
 		userState = await getLocalStorage().getItem('token');
+		const res = await axiosInstance.get('/public/contact-info');
+		contactInfo.address = res.data.address;
+		contactInfo.tel = res.data.tel;
+		$loading = false;
 		return userState ? (href = './dashboard') : (href = './signing');
 	});
 	const signUp = () => {
@@ -78,7 +93,7 @@
 <div in:fade={{ duration: 400, delay: 400 }} out:fade={{ duration: 400 }} class="w-full bg-white">
 	<div class="pt-4 mr-8 flex flex-col text-md gap-6 pb-4">
 		<span class="text-lg mr-2">ارتباط با ما</span>
-		<span>تلفن: ۰۲۱۱۲۳۴۵۶۷</span>
-		<span>آدرس: شهر فلان - خیابان فلان - پلاک فلان</span>
+		<span>تلفن: {contactInfo.tel}</span>
+		<span>آدرس: {contactInfo.address}</span>
 	</div>
 </div>

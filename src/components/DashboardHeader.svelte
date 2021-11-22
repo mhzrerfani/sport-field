@@ -42,14 +42,14 @@
 				</Item>
 				{#if $isAdmin}
 					<Item
-						href="/price-setting"
+						href="/setting"
 						on:click={() => {
-							if (active != '/price-setting') $loading = true;
-							setActive('/price-setting');
+							if (active != '/setting') $loading = true;
+							setActive('/setting');
 						}}
-						activated={active === '/price-setting'}
+						activated={active === '/setting'}
 					>
-						<span class="text-lg">تغییر قیمت ها</span>
+						<span class="text-lg">تنظیمات</span>
 					</Item>
 				{/if}
 			</List>
