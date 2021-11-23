@@ -56,7 +56,7 @@
 
 <div class="flex justify-center my-10">
 	<button
-		class="px-3 py-2 bg-green text-white rounded-lg mx-auto"
+		class="px-3 py-2 bg-green text-white rounded-lg mx-auto mb-10"
 		bind:this={button}
 		on:click={payingPage}
 	>

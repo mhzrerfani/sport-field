@@ -18,6 +18,26 @@
 	} as contactinfo;
 
 	onMount(async () => {
+		let deferredPrompt;
+		const addBtn = document.getElementById('add-button')!;
+
+		window.addEventListener('beforeinstallprompt', (e) => {
+ 		 e.preventDefault();
+  		deferredPrompt = e;
+
+ 	 addBtn.addEventListener('click', (e) => {
+    	deferredPrompt.prompt();
+    	deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        deferredPrompt = null;
+      });
+  });
+});
+
 		$loading = true;
 		userState = await getLocalStorage().getItem('token');
 		const res = await axiosInstance.get('/public/contact-info');
@@ -61,9 +81,9 @@
 		</div>
 		<Logo />
 		<svg
-			class="absolute z-10 -top-8 -left-8"
-			width="257"
-			height="294"
+			class="absolute z-10 -top-8 left-0"
+			width="210"
+			height="280"
 			viewBox="0 0 257 294"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

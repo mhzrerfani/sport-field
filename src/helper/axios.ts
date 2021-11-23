@@ -9,8 +9,8 @@ axiosInstance.interceptors.request.use(async function (config) {
 	const token = getLocalStorage().getItem('token');
 	if (token) {
 		config.headers['x-access-token'] = token;
-		return config;
 	}
+	return config;
 }, null);
 
 export const ToFormData = (object) =>

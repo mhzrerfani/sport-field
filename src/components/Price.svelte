@@ -17,13 +17,16 @@
 	$: $cost = total;
 </script>
 
-<div class="flex justify-center gap-5 mt-20">
-	<div>مبلغ قابل پرداخت:</div>
-	<div>
-		{#if total}
-			{total} ریال
-		{:else}
-			لطفا منتظر بمانید
-		{/if}
-	</div>
+<div class="flex justify-center gap-5 mt-20 " >
+	<span class="p-5 text-white" style="background-color:#df6631; border-radius:10px;" >
+		
+		<div>مبلغ قابل پرداخت:</div>
+		<div>
+			{#if total}
+				{total} ریال
+			{:else}
+				لطفا منتظر بمانید
+			{/if}
+		</div>
+	</span>
 </div>

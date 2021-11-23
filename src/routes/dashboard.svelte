@@ -34,8 +34,10 @@
 >
 	<DashboardHeader />
 	<Username />
-	<Calendar />
-	<TimeSlots />
+	<div class="my-10 p-10" style="width: 100%; background-color:#fcf7f3; margin-top:2em;">
+		<Calendar />
+		<TimeSlots />
+	</div>
 	<Sports />
 	<Ball />
 	<Price />

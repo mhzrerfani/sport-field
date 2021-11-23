@@ -54,6 +54,7 @@
 				? await axios.post('/user/submit-phone', formData)
 				: await axios.post('/auth/forget-password', formData);
 			$signingStep = 'code';
+			$loading=false;
 		} catch (error) {
 			contentHandler(e).errorReceived(error);
 		}
@@ -68,6 +69,7 @@
 				? await axios.post('/user/verify-phone', formData)
 				: await axios.post('/auth/check-code', formData);
 			$signingStep = 'password';
+			$loading=false;
 		} catch (error) {
 			contentHandler(e).errorReceived(error);
 		}
@@ -90,6 +92,7 @@
 					: await axios.patch('/auth/change-password', formData);
 				newPassPhase = false;
 				$signingStep = 'login';
+				$loading=false;
 			} catch (error) {
 				contentHandler(e).errorReceived(error);
 			}
