@@ -26,7 +26,6 @@
 		address: '',
 		tel: Number('')
 	} as contactinfo;
-
 	let field_name, field_price, ball_price: number;
 	let fields: Field[] = [];
 	let addSport = async () => {
@@ -66,7 +65,6 @@
 		} else {
 			Toastify(ToastifyConfig('قیمت توپ را وارد کنید')).showToast();
 		}
-
 		$loading = false;
 	};
 	const newContactInfoHandler = async () => {
@@ -76,7 +74,6 @@
 		} else {
 			Toastify(ToastifyConfig('اطلاعات را کامل وارد کنید')).showToast();
 		}
-
 		$loading = false;
 	};
 	onMount(async () => {

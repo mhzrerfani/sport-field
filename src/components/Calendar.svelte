@@ -62,6 +62,8 @@
 		}
 	};
 	$: generateWeeks(selectedMonth);
+
+	const weekDays = ['ش' ,'ی' , 'د','س','چ','پ','ج']
 </script>
 
 <div class="flex flex-col items-center w-min mx-auto shadow-xl rounded-xl p-2 mt-10 bg-white">
@@ -71,6 +73,17 @@
 		<span class="action" on:click={addMonth}>{'>'}</span>
 	</div>
 	<div class="w-min">
+		<div class="week">
+			{#each weekDays as weekDay}
+				<div
+					class="day"
+				>
+					<span style="font-size:1.32em;">
+						{weekDay}
+					</span>
+				</div>
+			{/each}
+		</div>
 		{#each weeks as week (`${week[0].date.format('YYYY-MM-DD')}-week`)}
 			<div class="week">
 				{#each week as day (day.date.format('YYYY-MM-DD'))}

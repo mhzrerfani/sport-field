@@ -10,6 +10,7 @@ export const to = writable();
 export const cost = writable();
 export const loading = writable(false);
 export const timeslot = writable();
+export const adminPhoneSelected = writable(null)
 export const isAdmin = writable(false);
 export const newReserve = writable(false);
 const globalStoreInitializer = (initialValue = { date: null }) => {

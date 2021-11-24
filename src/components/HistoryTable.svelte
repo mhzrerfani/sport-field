@@ -15,15 +15,12 @@
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
 	import Button, { Label } from '@smui/button';
 	import XLSX from 'xlsx';
-
 	const { user_is_admin } = get();
 	$isAdmin = user_is_admin;
 	const endpoint = $isAdmin ? '/admin/reserves-history' : '/reserve/history';
-
 	dayjs.extend(jalaliday);
 	dayjs.locale('fa');
 	dayjs.calendar('jalali');
-
 	let timeSlots = {
 		0: '۸ - ۹:۳۰',
 		1: '۹:۳۰ - ۱۱',
@@ -36,7 +33,6 @@
 		8: '۲۰ - ۲۱:۳۰',
 		9: '۲۱:۳۰ - ۲۳'
 	};
-
 	let items = [],
 		selectedReservation,
 		open = false,
@@ -86,7 +82,6 @@
 		open = false;
 		$loading = false;
 	};
-
 	let downloadExcel = () => {
 		const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
 		const wb = XLSX.utils.book_new();
@@ -100,12 +95,10 @@
 		table = table.$$.ctx[9].firstChild;
 		$loading = false;
 	});
-
 	$: start = currentPage * rowsPerPage;
 	$: end = Math.min(start + rowsPerPage, items.length);
 	$: slice = items.slice(start, end);
 	$: lastPage = Math.max(Math.ceil(items.length / rowsPerPage) - 1, 0);
-
 	$: if (currentPage > lastPage) {
 		currentPage = lastPage;
 	}

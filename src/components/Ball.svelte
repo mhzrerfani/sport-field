@@ -8,10 +8,6 @@
 	$: $ball = selected;
 </script>
 
-<!--
-  Note: segments must be unique. (They cannot === each other.)
-  If you need to show the same value, use keyed segments.
--->
 <div class="flex flex-col items-center gap-5 my-20">
 	<div>آیا به توپ نیاز دارید؟</div>
 

@@ -8,7 +8,7 @@
 	import 'toastify-js/src/toastify.css';
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import dayjs from 'dayjs';
-	import { isAdmin, newReserve, loading } from '../stores';
+	import { isAdmin, newReserve, loading  , adminPhoneSelected} from '../stores';
 
 	let res, fields;
 	let button;
@@ -23,7 +23,8 @@
 			amount = $cost,
 			need_ball = $ball == 'بله' ? true : false,
 			timeslot_id = $timeslot,
-			field_id = fields[$sport];
+			field_id = fields[$sport],
+			phone = $adminPhoneSelected;
 		if (timeslot_id && field_id) {
 			button.textContent = 'لطفا منتظر بمانید';
 			const formData = new FormData();
@@ -33,6 +34,7 @@
 			formData.append('timeslot_id', timeslot_id);
 			formData.append('field_id', field_id);
 			if ($isAdmin) {
+				formData.append('phone' , phone );
 				const reserve = await await axiosInstance.post('/admin/reserve', formData);
 				$loading = false;
 				button.textContent = reserve.data.message;
