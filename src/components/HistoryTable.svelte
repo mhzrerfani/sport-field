@@ -113,8 +113,8 @@
 
 {#if $isAdmin}
 	<div
-		class="columns margins flex md:flex-col lg:flex-row gap-2 justify-center mt-5"
-		style="direction: rtl;width: 663px; margin: 0 auto"
+		class="flex b3:flex-col b3:items-center gap-2 justify-center pt-5 w-min mx-auto"
+		style="direction: ltr; margin: 0 auto"
 	>
 		<div class="w-40">
 			<Textfield bind:value={phone} label="شماره تلفن" />
@@ -123,7 +123,7 @@
 		<PopupCalendar bind:value={from} title="از" />
 		<PopupCalendar bind:value={to} title="تا" />
 
-		<Select class="w-28" bind:value={status} label="وضعیت">
+		<Select style="width: 160px" bind:value={status} label="وضعیت">
 			<Option value="" />
 			{#each statusOptions as option}
 				<Option value={option}>{option}</Option>
@@ -140,14 +140,14 @@
 		>
 			<Icon class="material-icons" slot="trailingIcon">delete</Icon>
 		</div>
-		<button class="bg-orange rounded-xl text-white px-3" on:click={listFilter}>جستجو</button>
+		<button class="bg-orange rounded-xl text-white py-2 px-3" on:click={listFilter}>جستجو</button>
 	</div>
 {/if}
 <div class="flex flex-col items-center justify-center mt-5">
 	<DataTable
 		bind:this={table}
 		table$aria-label="Todo list"
-		style="width: 750px; direction: ltr; border-top-left-radius: 0; border-top-right-radius: 0;border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;"
+		style=" direction: ltr; border-radius: 12px;max-width: 100%"
 	>
 		<Head style="direction: rtl;">
 			<Row>
@@ -246,7 +246,7 @@
 		</Pagination>
 	</DataTable>
 	{#if $isAdmin}
-		<button class="px-3 py-2 text-white bg-green rounded-md mt-5" on:click={downloadExcel}
+		<button class="px-3 py-2 text-white bg-green rounded-md mt-5 mb-5" on:click={downloadExcel}
 			>خروجی اکسل</button
 		>
 	{/if}

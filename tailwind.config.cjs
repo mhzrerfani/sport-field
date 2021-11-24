@@ -4,7 +4,9 @@ const config = {
 
 	theme: {
 		screens: {
-			b1: { max: '1018px' }
+			b1: { max: '1018px' },
+			b2: { max: '618px' },
+			b3: { max: '840px' }
 		},
 		fontFamily: {
 			vazir: ['vazir']

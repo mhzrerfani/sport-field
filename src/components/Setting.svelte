@@ -24,7 +24,7 @@
 	}
 	let contactInfo = {
 		address: '',
-		tel: 0
+		tel: Number('')
 	} as contactinfo;
 
 	let field_name, field_price, ball_price: number;
@@ -154,27 +154,33 @@
 			</Row>
 		</Body>
 	</DataTable>
-	<div class="flex items-center justify-center gap-2 mt-10 h-16 px-2" style="direction:ltr">
+	<div
+		class="flex b2:flex-col items-center justify-center gap-2 mt-10 h-16 px-2"
+		style="direction:ltr"
+	>
 		<input
-			class="border border-orange rounded-xl px-1 h-12"
+			class="border border-orange rounded-xl px-1 py-3"
 			bind:value={ball_price}
 			placeholder="قیمت جدید توپ"
 			type="number"
 		/>
 		<button class="px-3 py-2 bg-green text-white rounded-lg" on:click={ballPrice}>ثبت</button>
 	</div>
-	<div class="flex items-center justify-center gap-2 mt-10 h-16 px-2" style="direction:ltr">
+	<div
+		class="flex b2:flex-col items-center justify-center gap-2 pb-5 mt-10 px-2"
+		style="direction:ltr"
+	>
 		<input
-			class="border border-orange rounded-xl px-1 h-12"
+			class="border border-orange rounded-xl px-1 py-3"
 			bind:value={contactInfo.address}
 			placeholder="آدرس"
 			type="text"
 		/>
 		<input
-			class="border border-orange rounded-xl px-1 h-12"
+			class="border border-orange rounded-xl px-1 py-3"
 			bind:value={contactInfo.tel}
 			placeholder="شماره تلفن"
-			type="number"
+			type="text"
 		/>
 		<button class="px-3 py-2 bg-green text-white rounded-lg" on:click={newContactInfoHandler}
 			>ثبت</button
