@@ -64,7 +64,7 @@
 	$: generateWeeks(selectedMonth);
 </script>
 
-<div class="flex flex-col items-center w-min mx-auto shadow-xl rounded-xl p-5 mt-10 bg-white">
+<div class="flex flex-col items-center w-min mx-auto shadow-xl rounded-xl p-2 mt-10 bg-white">
 	<div class="month w-full flex items-center">
 		<span class="action" on:click={subtractMonth}>{'<'}</span>
 		<span class="selectedMonth">{selectedMonth.format('MMMM YYYY')}</span>

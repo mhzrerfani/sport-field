@@ -113,8 +113,8 @@
 
 {#if $isAdmin}
 	<div
-		class="columns margins flex gap-2 justify-center mt-5"
-		style="direction: ltr;width: 663px; margin: 0 auto"
+		class="columns margins flex md:flex-col lg:flex-row gap-2 justify-center mt-5"
+		style="direction: rtl;width: 663px; margin: 0 auto"
 	>
 		<div class="w-40">
 			<Textfield bind:value={phone} label="شماره تلفن" />

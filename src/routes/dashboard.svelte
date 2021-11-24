@@ -34,7 +34,7 @@
 >
 	<DashboardHeader />
 	<Username />
-	<div class="my-10 p-10" style="width: 100%; background-color:#fcf7f3; margin-top:2em;">
+	<div class=" p-10 mx-auto" style="width: 100%; background-color:#fcf7f3; margin-top:2em;" >
 		<Calendar />
 		<TimeSlots />
 	</div>

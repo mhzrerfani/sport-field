@@ -5,21 +5,18 @@
 	import axios from 'axios';
 	import routeToPage from '../helper/routing';
 	import Toastify from 'toastify-js';
-	import 'toastify-js/src/toastify.css';
+	import 'toastify-js/src/toastify.css'
 	import ToastifyConfig from '../helper/ToastifyConfig';
 	import numberTransformer from '../helper/numberTransformer';
 	import store from '../helper/token';
 	import { onMount } from 'svelte';
-	import { getLocalStorage } from '../utils/window';
-	axios.defaults.baseURL = 'http://localhost:8026';
-
+	axios.defaults.baseURL = 'http://localhost:8026/';
 	let name: string,
 		phone: number,
 		code: number,
 		password: string,
 		password2: string,
 		newPassPhase = false;
-
 	const errorHandler = (error) => {
 		error.response.data.errors.forEach((error: { field: string; message: string }) => {
 			Toastify(ToastifyConfig(error.message)).showToast();
@@ -43,7 +40,6 @@
 			}
 		};
 	};
-
 	// Events Handlers
 	const phoneHandler = async (e) => {
 		contentHandler(e).sent();
@@ -54,7 +50,6 @@
 				? await axios.post('/user/submit-phone', formData)
 				: await axios.post('/auth/forget-password', formData);
 			$signingStep = 'code';
-			$loading=false;
 		} catch (error) {
 			contentHandler(e).errorReceived(error);
 		}
@@ -69,7 +64,6 @@
 				? await axios.post('/user/verify-phone', formData)
 				: await axios.post('/auth/check-code', formData);
 			$signingStep = 'password';
-			$loading=false;
 		} catch (error) {
 			contentHandler(e).errorReceived(error);
 		}
@@ -92,7 +86,6 @@
 					: await axios.patch('/auth/change-password', formData);
 				newPassPhase = false;
 				$signingStep = 'login';
-				$loading=false;
 			} catch (error) {
 				contentHandler(e).errorReceived(error);
 			}
@@ -107,7 +100,7 @@
 			const res = await axios.post('/auth/login', formData);
 			store(res.data.token);
 			$token = res.data.token;
-			getLocalStorage().setItem('token', res.data.token);
+			localStorage.setItem('token', res.data.token);
 			routeToPage('./dashboard', true);
 			e.target.disabled = true;
 		} catch (error) {
@@ -162,17 +155,16 @@
 		out:fade={{ duration: 400 }}
 		slot="login"
 		class="flex flex-col w-min gap-6 justify-center items-center"
-		on:submit|preventDefault={loginHandler}
 	>
 		<input class="input" type="text" placeholder="شماره همراه" bind:value={phone} />
 		<input class="input" type="password" placeholder="رمز" bind:value={password} />
-		<button type="submit" class="btn mt-4 px-3 py-2">ورود</button>
 		<button
-			class="text-white"
+			class=" self-start text-white"
 			on:click|preventDefault={() => {
 				$signingStep = 'phone';
 				newPassPhase = true;
 			}}>فراموشی رمز</button
 		>
+		<button class="btn mt-4 px-3 py-2" on:click|preventDefault={loginHandler}>ورود</button>
 	</form>
 </Signing>
